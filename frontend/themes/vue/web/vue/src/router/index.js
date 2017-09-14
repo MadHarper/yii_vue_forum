@@ -10,5 +10,6 @@ export default new Router({
   routes: [
     { path: '/', component: General },
     { path: '/delete', component: Delete }
-  ]
+  ],
+  mode: 'history',
 })
