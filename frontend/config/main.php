@@ -11,6 +11,9 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -40,7 +43,17 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/'   => 'site/index',
 
+                '/authdate' => 'auth/authdate',
+
+                '/subcategory/<slug:\w+>' => 'category/sub',
+
+                '/category' => 'category/index',
+                //'/category' => 'category/index',
+
+
+                '/theme' => 'theme/index',
             ],
         ],
         'assetManager' => [

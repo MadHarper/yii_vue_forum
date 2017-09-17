@@ -36,27 +36,7 @@
                   </ul>
 
 
-                  <ul class="nav navbar-nav navbar-right">
-
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Войти <span class="caret"></span></a>
-                      <ul class="dropdown-menu enter_sandman">
-                        <li>
-                          <div class="input-group login_div">
-
-
-                            <div class="alert alert-danger">
-                              Ошибки
-                            </div>
-                            Форма авторизации
-                            <button type="submit" class="btn btn-default btn_submit">Войти</button>
-
-                          </div>
-                        </li>
-                      </ul>
-                    </li>
-                    <li><a href="#">Регистрация</a></li>
-                  </ul>
+                  <auth :authDate="authDate"></auth>>
 
                 </div>
               </div>
@@ -104,15 +84,34 @@
 <script>
 import General from './components/General.vue'
 import Delete from './components/Delete.vue'
-
+import Auth from './components/Auth.vue'
+import axios from 'axios'
 
 export default {
   name: 'app',
-  components: { General, Delete },
+  components: { General, Auth, Delete },
   data () {
     return {
-      msg: 'Welcome to Your Vue Vuikit App!',
+        authDate: {isAuth: false}
     }
+  },
+  methods: {
+      authApi: function(id) {
+          const api_url = '/authdate'
+
+          // делаем GET запрос
+          axios.get(api_url)
+              .then((response) => {
+                  console.log(response.data);
+                  this.authDate = response.data;
+              })
+              .catch((error) => {
+                  ; // выводим ошибку в консоль , если что-то пошло не так
+              });
+      }
+  },
+  mounted() {
+      this.authApi()
   }
 }
 </script>

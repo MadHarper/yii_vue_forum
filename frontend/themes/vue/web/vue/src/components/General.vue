@@ -1,20 +1,20 @@
 <template>
+
 <div class="row" id="central">
-    <div>
-        <router-link to="/delete">Delete</router-link>
-    </div>
     <div class="col-md-9 theme forum-list">
 
 
 
-        <div class="row">
+        <div class="row" v-for="category in categories">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">Имя категории</div>
+                <div class="panel-heading">{{ category.name }}</div>
                 <!-- List group -->
                 <ul class="list-group">
 
-                    <li class="list-group-item">Имя сабкатегории</li>
+                    <li class="list-group-item" v-for="sub in category.childs">
+                        <router-link :to="sub.link">{{ sub.name }}</router-link>
+                    </li>
 
                 </ul>
             </div>
@@ -95,16 +95,17 @@ export default {
     name: "General",
     data () {
         return {
+            categories: []
         }
     },
     methods: {
         testApi: function(id) {
-            const api_url = '/site/api' // используем JSON заглушку
+            const api_url = '/category' // используем JSON заглушку
 
             // делаем GET запрос
             axios.get(api_url)
                     .then((response) => {
-                        console.log(response.data); // пишем ответ в массив user
+                        this.categories = response.data;
                     })
                     .catch((error) => {
                         console.log(error); // выводим ошибку в консоль , если что-то пошло не так
