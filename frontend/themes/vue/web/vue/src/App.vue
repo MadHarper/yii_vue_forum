@@ -36,7 +36,7 @@
                   </ul>
 
 
-                  <auth :authDate="authDate"></auth>>
+                  <auth></auth>
 
                 </div>
               </div>
@@ -92,26 +92,14 @@ export default {
   components: { General, Auth, Delete },
   data () {
     return {
-        authDate: {isAuth: false}
+
     }
   },
   methods: {
-      authApi: function(id) {
-          const api_url = '/authdate'
 
-          // делаем GET запрос
-          axios.get(api_url)
-              .then((response) => {
-                  console.log(response.data);
-                  this.authDate = response.data;
-              })
-              .catch((error) => {
-                  ; // выводим ошибку в консоль , если что-то пошло не так
-              });
-      }
   },
   mounted() {
-      this.authApi()
-  }
+      this.$store.dispatch('checkAuthState')
+  },
 }
 </script>

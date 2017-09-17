@@ -46,6 +46,7 @@ return [
                 '/'   => 'site/index',
 
                 '/authdate' => 'auth/authdate',
+                '/login' => 'auth/login',
 
                 '/subcategory/<slug:\w+>' => 'category/sub',
 

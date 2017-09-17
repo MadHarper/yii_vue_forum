@@ -47,7 +47,43 @@
                         <div class="alert alert-danger">
                             Ошибки
                         </div>
-                            Форма
+                            <!-- Форма авторизации -->
+
+                                <form id="login-form" action="" role="form" @submit.prevent="submitMe">
+                                    <input type="hidden" name="_csrf-frontend" value="25wkvi-DVLI5eQ___rAcPLrOYQMSBSqbadT6T_cbFEz2fJcjFGf-9IfqYvAJ2AOpHIOJJPqUEDn4qzmTBP2bGQ==">
+                                    <div class="form-group field-loginform-username required has-success">
+                                        <label class="control-label" for="loginform-username">Username</label>
+                                        <input v-model="LoginForm.username" type="text" id="loginform-username" class="form-control" name="LoginForm[username]" autofocus="" aria-required="true" aria-invalid="false">
+
+                                        <p class="help-block help-block-error"></p>
+                                    </div>
+                                    <div class="form-group field-loginform-password required has-success">
+                                        <label class="control-label" for="loginform-password">Password</label>
+                                        <input v-model="LoginForm.password" type="password" id="loginform-password" class="form-control" name="LoginForm[password]" aria-required="true" aria-invalid="false">
+
+                                        <p class="help-block help-block-error"></p>
+                                    </div>
+                                    <div class="form-group field-loginform-rememberme">
+                                        <div class="checkbox">
+                                            <label for="loginform-rememberme">
+                                                <input type="hidden" name="LoginForm[rememberMe]" value="0"><input type="checkbox" id="loginform-rememberme" name="LoginForm[rememberMe]" value="1" checked="">
+                                                Remember Me
+                                            </label>
+                                            <p class="help-block help-block-error"></p>
+
+                                        </div>
+                                    </div>
+                                    <div style="color:#999;margin:1em 0">
+                                        If you forgot your password you can <a href="/site/request-password-reset">reset it</a>.
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary" name="login-button">Login</button>                </div>
+
+                                </form>
+
+
+                            <!-- Конец формы авторизации -->
                         <button type="submit" class="btn btn-default btn_submit">Войти</button>
 
                     </div><!-- /input-group -->
@@ -63,17 +99,48 @@
 
 <script>
 
+    import axios from 'axios'
+
+
+
     export default {
         name: "Auth",
         data: function () {
             return {
+                LoginForm: {
+                    username: '',
+                    password: ''
+                }
             }
         },
-        props: ['authDate'],
+        //props: ['authDate'],
         methods: {
+            submitMe: function(){
+
+                const data = new FormData();
+                data.append('LoginForm[username]', this.LoginForm.username);
+                data.append('LoginForm[password]', this.LoginForm.password);
+                data.append('_csrf-frontend', $('meta[name="csrf-token"]').attr("content"));
+
+
+                axios.post('/login', data)
+                    .then((response) => {
+                        if(response.data.result){
+                            this.$store.dispatch('checkAuthState') //если авторизация успешна обновляем хранилище с данными юзера
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error); // выводим ошибку в консоль , если что-то пошло не так
+                    });
+            }
         },
         mounted() {
 
-        }
+        },
+        computed: {
+            authDate() {
+                return this.$store.getters.authDate;
+            }
+        },
     }
 </script>

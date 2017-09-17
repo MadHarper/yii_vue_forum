@@ -20,10 +20,18 @@ use yii\httpclient\Client;
 class AuthController extends Controller
 {
 
+    /*
+    public function beforeAction($action) {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
+    }
+    */
+
 
 
     public function actionAuthdate()
     {
+
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if(Yii::$app->user->isGuest){
@@ -39,4 +47,31 @@ class AuthController extends Controller
         ];
 
     }
+
+
+
+    public function actionLogin()
+    {
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return ['result' => true];
+        } else {
+            return ['result' => false]; //ToDo: и надо езе вернуть ошибки
+        }
+    }
+
+
+    public function actionStore()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return ['auth_fake' => 'abrvalk'];
+    }
+
 }
