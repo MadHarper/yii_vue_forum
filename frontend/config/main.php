@@ -47,6 +47,7 @@ return [
 
                 '/authdate' => 'auth/authdate',
                 '/login' => 'auth/login',
+                '/logout' => 'auth/logout',
 
                 '/subcategory/<slug:\w+>' => 'category/sub',
 
@@ -55,6 +56,9 @@ return [
 
 
                 '/theme' => 'theme/index',
+
+                //любой
+                //'/<slug:\w+>'   => 'site/index',
             ],
         ],
         'assetManager' => [

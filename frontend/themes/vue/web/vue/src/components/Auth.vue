@@ -14,7 +14,7 @@
                 <li class="divider"></li>
                 <li><a href="#">Favourites Snippets <span class="glyphicon glyphicon-heart pull-right"></span></a></li>
                 <li class="divider"></li>
-                <li><a href="#">Выйти <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                <li><a href="#" @click="logout">Выйти <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
             </ul>
         </li>
         <li class="top_grlyph">
@@ -124,6 +124,18 @@
 
 
                 axios.post('/login', data)
+                    .then((response) => {
+                        if(response.data.result){
+                            this.$store.dispatch('checkAuthState') //если авторизация успешна обновляем хранилище с данными юзера
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error); // выводим ошибку в консоль , если что-то пошло не так
+                    });
+            },
+            logout: function(e){
+                e.preventDefault()
+                axios.get('/logout')
                     .then((response) => {
                         if(response.data.result){
                             this.$store.dispatch('checkAuthState') //если авторизация успешна обновляем хранилище с данными юзера

@@ -52,12 +52,11 @@ class AuthController extends Controller
 
     public function actionLogin()
     {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return ['result' => false];
         }
-
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -68,10 +67,13 @@ class AuthController extends Controller
     }
 
 
-    public function actionStore()
+    public function actionLogout()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return ['auth_fake' => 'abrvalk'];
-    }
 
+
+        if(Yii::$app->user->logout()){
+            return ['result' => true];
+        }
+    }
 }
